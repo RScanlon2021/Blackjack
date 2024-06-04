@@ -9,10 +9,25 @@ def random_card(deck):
 	return random.choice(deck)
 
 def card_totals(hand):
-	total = 0
-	for card in hand:
-		total += card
-	return total
+    total = sum(hand)
+    aces = hand.count(11)
+    while total > 21 and aces:
+        total -= 10
+        aces -= 1
+    return total
+
+def new_game_option():
+	new_game = False
+	while new_game == False:
+		play_new_game = input("Would you like to play another hand? 'Y' or 'N'? \n").lower()
+		if play_new_game not in ['y', 'n']:
+			print("Please choose 'Y' or 'N'.\n")
+		elif play_new_game == 'y':
+			new_game = True
+			blackjack()
+		elif play_new_game == 'n':
+			print("Thank you for playing at Caesar's Palace!")
+			return
 
 def blackjack():
 	deck = [11,2,3,4,5,6,7,8,9,10,10,10,10]
@@ -21,27 +36,28 @@ def blackjack():
 	stand = False
 
 	print(f"Your starting hands are - Dealer:[X, {computer_hand[1]}], You:{player_hand} \n")
-
+	# Handle player cards
 	while stand == False:
 		player_input = input("\nHit or Stand?\n").lower()
 		if player_input not in ['hit', 'stand']:
 			print("Please choose 'Hit' or 'Stand'")
 		elif player_input == 'hit':
-			time.sleep(1)
+			time.sleep(.5)
 			player_hand.append(random_card(deck))
 			print(player_hand)
 			if card_totals(player_hand) > 21:
-				if 11 in player_hand:
+				if 11 in player_hand: # Handles ace handling
 					player_hand[player_hand.index(11)] = 1
 				else:
 					print("You Lose!")
-					blackjack()
+					new_game_option()
+					return
 		else:
 			stand = True
 	
 	print(f"Your total is {card_totals(player_hand)}\n")
 	print(computer_hand)
-	
+	# Handle Computer cards and ace handling
 	while True:
 		time.sleep(1)
 		if 11 in computer_hand and card_totals(computer_hand) > 21:
@@ -58,22 +74,16 @@ def blackjack():
 		
 	print(f"\nThe computer has {card_totals(computer_hand)}\n")
 	print(f"You have {card_totals(player_hand)}\n")
-	
+	# Handle winner logic
 	if card_totals(player_hand) > card_totals(computer_hand) and card_totals(player_hand) <= 21:
-		print("\nYou Win!!\n")
+		print("You Win!!\n")
 	elif card_totals(player_hand) == card_totals(computer_hand):
-		print("\nDraw\n")
+		print("Draw\n")
 	elif card_totals(player_hand) <= 21 and card_totals(computer_hand) > 21:
-		print("\nYou Win!!\n")
+		print("You Win!!\n")
 	else:
-		print("\nYou Lose!\n")
+		print("You Lose!\n")
 
-	play_new_game = input("Would you like to play another hand? 'Y' or 'N'? \n").lower()
-	if play_new_game not in ['y', 'n']:
-		print("Please choose 'Y' or 'N'.\n")
-	elif play_new_game == 'y':
-		blackjack()
-	else:
-		print("Thank you for playing at Caesar's Palace!")
-
+	new_game_option()
+	
 blackjack()

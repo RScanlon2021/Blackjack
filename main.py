@@ -58,7 +58,7 @@ def blackjack():
 				if 11 in player_hand: # Handles ace handling
 					player_hand[player_hand.index(11)] = 1
 				else:
-					print("You Lose!")
+					print("BUST!")
 					new_game_option()
 					return
 		else:

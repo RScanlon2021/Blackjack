@@ -29,7 +29,9 @@ def new_game_option():
 			return
 		
 def winner(player_hand, computer_hand):
-	if card_totals(player_hand) > card_totals(computer_hand) and card_totals(player_hand) <= 21:
+	if card_totals(player_hand) == 21 and card_totals(computer_hand) != 21:
+		print("BACKJACK!\n")
+	elif card_totals(player_hand) > card_totals(computer_hand) and card_totals(player_hand) < 21:
 		print("You Win!!\n")
 	elif card_totals(player_hand) == card_totals(computer_hand):
 		print("Draw\n")
@@ -55,12 +57,9 @@ def blackjack():
 			player_hand.append(random_card(deck))
 			print(player_hand)
 			if card_totals(player_hand) > 21:
-				if 11 in player_hand: # Handles ace handling
-					player_hand[player_hand.index(11)] = 1
-				else:
-					print("BUST!")
-					new_game_option()
-					return
+				print("BUST!")
+				new_game_option()
+				return
 		else:
 			stand = True
 	

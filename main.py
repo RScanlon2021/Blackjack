@@ -1,5 +1,10 @@
 import random
 import time
+import os
+
+def clear_screen():
+    # Clear the terminal screen
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def first_deal(deck): # Deals first two cards to player and computer
 	return random.sample(deck, 2)
@@ -15,22 +20,21 @@ def card_totals(hand): # Calculates the total of the hand and converts aces to 1
         aces -= 1
     return total
 
-def new_game_option(): # handles player input for new game after each game
-	new_game = False
-	while new_game == False:
-		play_new_game = input("Would you like to play another hand? 'Y' or 'N'? \n").lower()
-		if play_new_game not in ['y', 'n']:
-			print("Please choose 'Y' or 'N'.\n")
-		elif play_new_game == 'y':
-			new_game = True
-			blackjack()
-		elif play_new_game == 'n':
-			print("Thank you for playing at Caesar's Palace!")
-			return
+def new_game_option(): 
+    while True:  # Loop until a valid input is provided
+        play_new_game = input("Would you like to play another hand? 'Y' or 'N'? \n").lower()
+        if play_new_game not in ['y', 'n']:
+            print("Please choose 'Y' or 'N'.\n")
+        elif play_new_game == 'y':
+            blackjack()  # Start a new game
+        elif play_new_game == 'n':
+            print("Thank you for playing at Caesar's Palace!")
+            break  # Exit the loop and end the program
+
 		
 def winner(player_hand, computer_hand): # Handles the logic to determine the winner
 	if card_totals(player_hand) == 21 and card_totals(computer_hand) != 21:
-		print("BACKJACK!\n")
+		print("BLACKJACK!\n")
 	elif card_totals(player_hand) > card_totals(computer_hand) and card_totals(player_hand) < 21:
 		print("You Win!!\n")
 	elif card_totals(player_hand) == card_totals(computer_hand):
@@ -41,6 +45,7 @@ def winner(player_hand, computer_hand): # Handles the logic to determine the win
 		print("You Lose!\n")
 
 def blackjack():
+	clear_screen()
 	deck = [11,2,3,4,5,6,7,8,9,10,10,10,10]
 	computer_hand = first_deal(deck)
 	player_hand = first_deal(deck)
@@ -69,10 +74,10 @@ def blackjack():
 	while True:
 		time.sleep(1)
 		if 11 in computer_hand and card_totals(computer_hand) > 21:
-			computer_hand[computer_hand.index(11)] = 1
+			# computer_hand[computer_hand.index(11)] = 1
 			print(computer_hand)
 		elif 11 in computer_hand and card_totals(computer_hand) >= 17 and card_totals(computer_hand) < card_totals(player_hand):
-			computer_hand[computer_hand.index(11)] = 1
+			# computer_hand[computer_hand.index(11)] = 1
 			print(computer_hand)
 		elif card_totals(computer_hand) < 17:
 			computer_hand.append(random_card(deck))

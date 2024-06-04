@@ -1,13 +1,13 @@
 import random
 import time
 
-def first_deal(deck):
+def first_deal(deck): # Deals first two cards to player and computer
 	return random.sample(deck, 2)
 
-def random_card(deck):
+def random_card(deck): # Deals one random card from the deck
 	return random.choice(deck)
 
-def card_totals(hand):
+def card_totals(hand): # Calculates the total of the hand and converts aces to 1s
     total = sum(hand)
     aces = hand.count(11)
     while total > 21 and aces:
@@ -15,7 +15,7 @@ def card_totals(hand):
         aces -= 1
     return total
 
-def new_game_option():
+def new_game_option(): # handles player input for new game after each game
 	new_game = False
 	while new_game == False:
 		play_new_game = input("Would you like to play another hand? 'Y' or 'N'? \n").lower()
@@ -28,7 +28,7 @@ def new_game_option():
 			print("Thank you for playing at Caesar's Palace!")
 			return
 		
-def winner(player_hand, computer_hand):
+def winner(player_hand, computer_hand): # Handles the logic to determine the winner
 	if card_totals(player_hand) == 21 and card_totals(computer_hand) != 21:
 		print("BACKJACK!\n")
 	elif card_totals(player_hand) > card_totals(computer_hand) and card_totals(player_hand) < 21:
